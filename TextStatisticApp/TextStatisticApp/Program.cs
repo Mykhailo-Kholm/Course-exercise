@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,83 +13,27 @@ namespace TextStatisticApp
     {
         static void Main(string[] args)
         {
-            string fileName = Console.ReadLine();
-            string[] separators = {" ", "", ",", "."," - ", "\\", "|", "/", "!", "?", "(", ")", "{", "}", "[", "]", "<", ">", "\'", "\""};
             Dictionary<string, WordStatistic> wordsInfo = new Dictionary<string, WordStatistic>();
-            string[] words = null;
+            string fileName = Console.ReadLine();
 
             //read data and get statistics
-            try
-            {
-                using (StreamReader sr = new StreamReader(fileName))
-                {
-                    int line = 1;
-                    while (!sr.EndOfStream)
-                    {
 
-                        words = sr.ReadLine().Trim().Split(separators,StringSplitOptions.RemoveEmptyEntries);
-                        for (int i = 0; i < words.Length; i++)
-                        {
-                            if (!wordsInfo.ContainsKey(words[i]))
-                                wordsInfo.Add(words[i], new WordStatistic(1, line, i+1));
-                            else
-                            {
-                                wordsInfo[words[i]].Counter++;
-                                wordsInfo[words[i]].WordPositions.Add(new Position()
-                                {
-                                    LineNumber = line,
-                                    PositionInLine = i
-                                });
-                            }
-                        }
-
-                        line++;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
+            // Stopwatch sw = new Stopwatch();
+            // sw.Start();
+            DataWorker.GetWordsIhfo(fileName, ref wordsInfo);
+                
             //Output all info
-            try
+            var orderWordsInfo = wordsInfo.OrderByDescending(w => w.Value.Counter);
+            foreach (var word in orderWordsInfo)
             {
-                foreach (var word in wordsInfo)
-                {
-                    Console.WriteLine(word.Key + "\t" + word.Value.Counter);
-                }
+                Console.WriteLine($" Word \" {word.Key} \" repeated -> {word.Value.Counter}");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            // sw.Stop();
+            // TimeSpan ts = sw.Elapsed;
+            // Console.WriteLine(ts.TotalSeconds);
 
             // find word position
-            try
-            {
-                while (true)
-                {
-                    string MyWord = Console.ReadLine();
-                    if (wordsInfo.ContainsKey(MyWord))
-                    {
-                        foreach (var pos in wordsInfo[MyWord].WordPositions)
-                        {
-                            Console.WriteLine($"{MyWord} in line {pos.LineNumber} on position: {pos.PositionInLine}");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("The word is not in the text. Please enter another");
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            Console.ReadKey();
+            DataWorker.FindPositionOfWord(ref wordsInfo);
         }
     }
 }
