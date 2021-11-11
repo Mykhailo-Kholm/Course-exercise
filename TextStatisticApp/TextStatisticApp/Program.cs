@@ -26,7 +26,7 @@ namespace TextStatisticApp
             var orderWordsInfo = wordsInfo.OrderByDescending(w => w.Value.Counter);
             foreach (var word in orderWordsInfo)
             {
-                Console.WriteLine($" Word \" {word.Key} \" repeated -> {word.Value.Counter}");
+                Console.WriteLine($"{word.Key}      {word.Value.Counter}");
             }
             // sw.Stop();
             // TimeSpan ts = sw.Elapsed;
