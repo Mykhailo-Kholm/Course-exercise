@@ -20,7 +20,7 @@ namespace TextStatisticApp
 
             // Stopwatch sw = new Stopwatch();
             // sw.Start();
-            DataWorker.GetWordsIhfo(fileName, ref wordsInfo);
+            DataWorker.GetWordsIhfo(fileName, wordsInfo);
                 
             //Output all info
             var orderWordsInfo = wordsInfo.OrderByDescending(w => w.Value.Counter);
@@ -33,7 +33,7 @@ namespace TextStatisticApp
             // Console.WriteLine(ts.TotalSeconds);
 
             // find word position
-            DataWorker.FindPositionOfWord(ref wordsInfo);
+            DataWorker.FindPositionOfWord(wordsInfo);
         }
     }
 }

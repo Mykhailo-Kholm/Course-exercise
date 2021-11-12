@@ -9,7 +9,7 @@ namespace TextStatisticApp
 {
     class DataWorker
     {
-        public static void GetWordsIhfo(string fileName, ref Dictionary<string,WordStatistic> wordsInfo)
+        public static void GetWordsIhfo(string fileName, Dictionary<string,WordStatistic> wordsInfo)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace TextStatisticApp
             }
         }
 
-        public static void FindPositionOfWord(ref Dictionary<string, WordStatistic> wordsInfo)
+        public static void FindPositionOfWord(Dictionary<string, WordStatistic> wordsInfo)
         {
             while (true)
             {
