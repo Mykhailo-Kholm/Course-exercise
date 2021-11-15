@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextStatisticApp
 {
     class DataWorker
     {
-        public static void GetWordsIhfo(string fileName, Dictionary<string,WordStatistic> wordsInfo)
+        public static void GetWordsInfo(string fileName, Dictionary<string,WordStatistic> wordsInfo)
         {
             try
             {
@@ -20,7 +17,7 @@ namespace TextStatisticApp
                     int line = 1;
                     while (!sr.EndOfStream)
                     {
-                        words = sr.ReadLine().Trim().Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                        words = sr.ReadLine().Trim().ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries);
                         for (int i = 0; i < words.Length; i++)
                         {
                             if (!wordsInfo.ContainsKey(words[i]))
@@ -33,6 +30,9 @@ namespace TextStatisticApp
                                     LineNumber = line,
                                     PositionInLine = i
                                 });
+
+
+
                             }
                         }
                         line++;
@@ -49,7 +49,8 @@ namespace TextStatisticApp
         {
             while (true)
             {
-                string MyWord = Console.ReadLine();
+                Console.WriteLine("What word do you want to find?");
+                var MyWord = Console.ReadLine();
                 if (wordsInfo.ContainsKey(MyWord))
                 {
                     foreach (var pos in wordsInfo[MyWord].WordPositions)
